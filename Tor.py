@@ -101,7 +101,9 @@ class Tor(Scene):
                 ]
             ]
         )
-        self.play(ReplacementTransform(website_label, website_label_transformed))
+        self.play(
+            ReplacementTransform(website_label, website_label_transformed),
+        )
         self.play(
             *[FadeInFromDown(i) for i in public_keys],
             FadeOutAndShiftDown(server_label),
