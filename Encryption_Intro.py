@@ -140,9 +140,7 @@ class AKCDemo(Scene):
 
         # "Hello" follows around file_1 using file_1.add_updater()
         file_1_label = (
-            TextMobject("Hello")
-            .move_to(file_1.get_center())
-            .scale(cleartext_scale)  # noqa: E501
+            TextMobject("Hello").move_to(file_1.get_center()).scale(cleartext_scale)
         )
         file_1_label.add_updater(lambda m: m.move_to(file_1.get_center()))
 

@@ -18,7 +18,7 @@ class TorIntro(Scene):
             *[
                 ReplacementTransform(title[2 * i], title_Transformed[i])
                 for i in range(3)
-            ],  # noqa: E501
+            ],
             *[FadeOut(title[i]) for i in range(6) if i % 2 == 1],
             FadeInFrom(title_Transformed[-1], RIGHT),
         )
@@ -45,7 +45,7 @@ class Tor(Scene):
         client_arrow = Line(
             client.get_corner(UR) + LEFT * 1.5,
             server_1.get_left(),
-            buff=SMALL_BUFF,  # noqa: E501
+            buff=SMALL_BUFF,
         ).add_tip(0.2)
 
         public_keys = []
@@ -101,9 +101,7 @@ class Tor(Scene):
                 ]
             ]
         )
-        self.play(
-            ReplacementTransform(website_label, website_label_transformed)
-        )  # noqa: E501
+        self.play(ReplacementTransform(website_label, website_label_transformed))
         self.play(
             *[FadeInFromDown(i) for i in public_keys],
             FadeOutAndShiftDown(server_label),
@@ -179,4 +177,4 @@ class Tor(Scene):
         self.remove(onions[0])
         self.play(*[Rotate(i) for i in arrows + [client_arrow, website_arrow]])
         self.wait()
-        self.play(*[FadeOutAndShiftDown(i) for i in self.mobjects])  # noqa: E501
+        self.play(*[FadeOutAndShiftDown(i) for i in self.mobjects])
