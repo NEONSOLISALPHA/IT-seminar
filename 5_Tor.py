@@ -50,16 +50,11 @@ class Tor(Scene):
 
         public_keys = []
         for index, server in enumerate(servers):
-            key = TextMobject(f"k{index+1}")
+            key = TextMobject(f"s{index+1}")
             key.move_to(server.get_corner(UL) + LEFT * 0.5)
-            key.set_color(GREEN)
+            key.set_color(RED)
             public_keys.append(key)
-
-        secret_keys = []
-        for index, key in enumerate(public_keys):
-            secret_key = TextMobject(f"s{index + 1}")
-            secret_key.next_to(key, UP, buff=0.4).set_color(RED)
-            secret_keys.append(secret_key)
+        public_key_copies = [i.copy() for i in public_keys]
 
         arrows = [
             Line(
@@ -108,14 +103,12 @@ class Tor(Scene):
             *[FadeInFromDown(i) for i in public_keys],
             FadeOutAndShiftDown(server_label),
         )
-        self.play(*[FadeInFromDown(i) for i in secret_keys])
-
-        for i in public_keys:
+        for i in public_key_copies:
             i.generate_target()
             i.target.move_to(client.get_center())
 
-        self.play(*[MoveToTarget(i) for i in public_keys])
-        self.play(*[FadeOut(i) for i in public_keys])
+        self.play(*[MoveToTarget(i) for i in public_key_copies])
+        self.play(*[FadeOut(i) for i in public_key_copies])
         onion_full = SVGMobject(r"animations/assets/Onions/onion_Full.svg")
         onion_1 = SVGMobject(r"animations/assets/Onions/Onion_1.svg")
         onion_2 = SVGMobject(r"animations/assets/Onions/Onion_2.svg")
@@ -158,18 +151,18 @@ class Tor(Scene):
 
         onion_copies = [onion_text(onion_copy) for onion_copy in onion_copies]
 
-        for index, secret_key in enumerate(secret_keys):
-            secret_key.generate_target()
-            secret_key.target.move_to(onion_copies[index][0].get_center())
+        for index, public_key in enumerate(public_keys):
+            public_key.generate_target()
+            public_key.target.move_to(onion_copies[index][0].get_center())
 
         self.play(FadeInFromDown(onion_copies[0]), FadeInFromDown(onion_full))
         for i in range(1, len(onions)):
             self.play(
                 Transform(onions[0], onions[i]),
-                MoveToTarget(secret_keys[i - 1]),
+                MoveToTarget(public_keys[i - 1]),
                 Transform(onion_copies[0], onion_copies[i]),
             )
-            self.remove(secret_keys[i - 1])
+            self.remove(public_keys[i - 1])
 
         self.remove(onion_copies[3])
         self.play(
